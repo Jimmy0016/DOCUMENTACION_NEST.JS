@@ -99,4 +99,5 @@ rutaQuery(@Query() query) {
 carsQuery(@Query('count', ParseIntPipe) carCount: number) {
   return carCount;
 }
+
 }

@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Customer } from './interface/customer/customer.interface';
+import { NotFoundException } from '@nestjs/common';
+import { HttpException } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 @Injectable()
 export class CustomersService  { 
     private custmon: Customer[] = [
@@ -21,8 +24,14 @@ export class CustomersService  {
  }
             
 getId(id: number): Customer | undefined {
- return this.custmon.find( (item: Customer) => item.id == id);
- }
+ const customer = this.custmon.find( (item: Customer) => item.id == id);
+           if(customer) {
+             return customer;
+           } else {
+             throw new NotFoundException(`No encontramos el producto ${id}`);
+           }
+          }
+
  update(id: number, body: any) {
            let CUSTOMER: Customer = {
              id,
@@ -36,7 +45,12 @@ getId(id: number): Customer | undefined {
            });
          }
          delete(id: number) {
-                   this.custmon = this.custmon.filter( (item: Customer) => item.id != id );
+                   const customer = this.custmon.find((item: Customer) => item.id == id);
+                             if(customer) {
+                               this.custmon = this.custmon.filter( (item: Customer) => item.id != id );
+                             } else {
+                               throw new HttpException(`No existe el producto ${id}`, HttpStatus.NOT_FOUND);
+                             }
                  }
                  private lastId(): number {
                     return this.custmon[this.custmon.length - 1].id;
