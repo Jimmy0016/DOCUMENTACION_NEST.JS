@@ -44,9 +44,9 @@ export class ProductsController {
   getHelloInProducts(): string {
     return "Estamos en productos!!!";
   }
-  @Get('hot')
+  @Get('gente')
 getSpecialProducts(): string {
-  return "Te vamos a mostrar los productos más calientes!!";
+  return "te vamos a mostrar productos";
 }
 
 
@@ -73,14 +73,14 @@ findWithSize(@Param('id') id: number, @Param('size') size: string ) {
 @Get('ruta-error-404')
 @HttpCode(HttpStatus.NOT_FOUND)
 rutaConError404() {
-  return 'Esto es un error 404!!';
+  return 'Esto es un error 404!';
 }
 
-// @Put(':id')
-// update(@Param('id') id: number, @Body() body) {
-//   return `Estás haciendo una operación de actualización del recurso ${id} 
-//           con ${body.name} y ${body.description}`;
-// }
+@Put(':id')
+modificar(@Param('id') id: number, @Body() body) {
+  return `Estás haciendo una operación de actualización del recurso ${id} 
+          con ${body.name} y ${body.description}`;
+}
 @Patch(':id')
 partialUpdate(@Param('id') id: number, @Body() body) {
   return `Actualización parcial del ítem ${id}`;

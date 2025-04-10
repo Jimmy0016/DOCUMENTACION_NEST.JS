@@ -41,5 +41,16 @@ getId(id: number): Customer | undefined {
                  private lastId(): number {
                     return this.custmon[this.custmon.length - 1].id;
                   }
+                  insert(body: any) {
+                    this.custmon = [
+                      ...this.custmon,
+                      {
+                        id: this.lastId() + 1,
+                        name: body.name,
+                        birthday: body.birthday,
+                        age: body.age
+                      }
+                    ];
+                  }
     
 }

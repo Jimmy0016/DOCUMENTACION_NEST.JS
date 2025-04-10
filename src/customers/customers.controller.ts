@@ -1,4 +1,4 @@
-import { Controller,Get,HttpStatus,Param,Res,Put,Body,Delete,HttpCode} from '@nestjs/common';
+import { Controller,Get,HttpStatus,Param,Res,Post,Put,Body,Delete,HttpCode,Query,ParseIntPipe} from '@nestjs/common';
 import { Customer } from './interface/customer/customer.interface';
 import { CustomersService } from './customers.service';
 
@@ -14,6 +14,22 @@ export class CustomersController {
       find(@Param('id') id: number) {
         return this.customersService.getId(id);
       }
+       @Post()
+          @HttpCode(HttpStatus.NO_CONTENT)
+          createProduct(
+            @Body() body,
+          ) {
+            this.customersService.insert(body);
+          }
+           
+    @Get()
+    getHelloInCustomers(): string {
+      return "Estamos en productos!!!";
+    }
+    @Get('gente')
+  getSpecialCustomers(): string {
+    return "te vamos a mostrar cosas";
+  }
        @Put(':id')
           update(
             @Param('id') id: number, 
@@ -26,15 +42,28 @@ export class CustomersController {
               delete(@Param('id') id: number) {
                 this.customersService.delete(id);
               }
+              @Get('query')
+              rutaQuery(@Query() query) {
+                  return `El dato query.x ha recibido el valor ${query.x}`;
+              }
+              @Get('cars')
+              carsQuery(@Query('count', ParseIntPipe) carCount: number) {
+                return carCount;
+              }
+              @Get('ruta-error-404')
+              @HttpCode(HttpStatus.NOT_FOUND)
+               rutaConError404() {
+               return 'Esto es un error 404!';
+               }
 
 
   
-    // @Get(':id')
-    // find(@Res() response, @Param('id') id: number) {
-    //   if(id < 100) {
-    //     return response.status(HttpStatus.OK).send(`Página del producto ${id}`);
-    //   } else {
-    //     return response.status(HttpStatus.NOT_FOUND).send(`Producto inexistente`);
-    //   }
-    // }
+    @Get(':id')
+    fin(@Res() response, @Param('id') id: number) {
+      if(id < 100) {
+        return response.status(HttpStatus.OK).send(`Página del producto ${id}`);
+      } else {
+        return response.status(HttpStatus.NOT_FOUND).send(`Producto inexistente`);
+      }
+    }
 }
